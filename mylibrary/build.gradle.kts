@@ -12,7 +12,7 @@ val githubProperties = Properties()
 githubProperties.load(FileInputStream(rootProject.file("github.properties")))
 
 fun getVersionName(): String {
-    return "0.0.4" // Replace with version Name
+    return "0.1.0" // Replace with version Name
 }
 
 fun getArtificatId(): String {
@@ -21,12 +21,13 @@ fun getArtificatId(): String {
 
 publishing {
     publications {
-        create<MavenPublication>("gpr") {
-            run {
-                groupId = "com.example.mylibrary"
-                artifactId = getArtificatId()
-                version = getVersionName()
-                artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
+        register<MavenPublication>("gpr") {
+            groupId = "com.example.mylibrary"
+            artifactId = getArtificatId()
+            version = getVersionName()
+
+            afterEvaluate {
+                from(components["release"])
             }
         }
     }
